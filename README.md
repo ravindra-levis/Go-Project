@@ -1,49 +1,85 @@
-# Task Management REST API (Go)
+# Task Management REST API
 
-A production-style REST API built in Go using the standard library.
+A simple REST API built in Go for managing tasks.
 
 ## Features
-- Create, list, update, and delete tasks
-- Clean architecture (handlers, models, storage)
-- In-memory storage with interface-based abstraction
-- Middleware-based request logging
+
+- Create, read, update, and delete tasks
+- Clean architecture with handlers, models, and storage layers
+- In-memory storage with interface-based design
 - JSON-based REST API
 
-## Endpoints
+## Installation
+
+```bash
+go run main.go
+```
+
+Server runs on `http://localhost:8080`
+
+## API Endpoints
 
 ### Create Task
+```bash
 POST /tasks
-```json
-{ "title": "Learn Go", "done": false }
-List Tasks
+Content-Type: application/json
+
+{
+  "title": "Learn Go",
+  "done": false
+}
+```
+
+### List All Tasks
+```bash
 GET /tasks
-Update Task
+```
+
+### Update Task
+```bash
 PUT /tasks/{id}
-{ "done": true }
-Delete Task
+Content-Type: application/json
+
+{
+  "done": true
+}
+```
+
+### Delete Task
+```bash
 DELETE /tasks/{id}
+```
 
-Design Decisions
-- Used interfaces to decouple storage from handlers
-- Method-based routing for REST compliance
-- Middleware for cross-cutting concerns
+## Project Structure
 
+```
+task-api/
+├── main.go              # Entry point
+├── handlers/
+│   └── task.go         # HTTP handlers
+├── models/
+│   └── task.go         # Task model
+└── storage/
+    ├── store.go        # Storage interface
+    └── memory.go       # In-memory implementation
+```
 
-## HOW TO EXPLAIN THIS PROJECT (MOST IMPORTANT)
+## Example Usage
 
-### Interview Explanation (Practice this)
+```bash
+# Create a task
+curl -X POST http://localhost:8080/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Complete project", "done": false}'
 
-> “I built a task management REST API in Go using clean architecture.  
-> Handlers depend on interfaces, not concrete storage, which makes the system extensible and testable.  
-> I used method-based routing to model REST semantics and middleware for logging.  
-> Storage is abstracted so it can later be replaced with a database without touching handlers.”
+# List all tasks
+curl http://localhost:8080/tasks
 
+# Update task
+curl -X PUT http://localhost:8080/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"done": true}'
 
----
-
-You must be able to answer:
-
-1. Why did you use interfaces for storage?
-2. How does middleware improve design?
-3. How would you add database storage?
-4. What would you improve next?
+# Delete task
+curl -X DELETE http://localhost:8080/tasks/1
+```
